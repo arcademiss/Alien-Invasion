@@ -28,7 +28,7 @@ class AlienInvasion:
             self._check_events()
             self.ship.update()
             self.bullets.update()
-            self._delete_bullet(self.bullets.copy())
+            self._update_bullet(self.bullets.copy())
             self._update_alien()
             self._update_screen()
 
@@ -109,6 +109,9 @@ class AlienInvasion:
         """Move alien to the right"""
         self._check_fleet_edges()
         self.aliens.update()
+        # Detect if an alien hits player ship
+        if pygame.sprite.spritecollideany(self.ship, self.aliens):
+            print("Ship hit!")
 
     def _update_screen(self):
         """Updates the screen"""
@@ -122,11 +125,22 @@ class AlienInvasion:
         # Displays the last drawn screen
         pygame.display.flip()
 
-    def _delete_bullet(self, bullets):
-        """Deletes a bullet"""
+    def _update_bullet(self, bullets):
+        """Deletes an old bullet and removes the bullet+alien colision"""
         for bullet in bullets:
             if bullet.rect.bottom <= 0:
                 self.bullets.remove(bullet)
+        self._check_bullet_alien_collision()
+        # If we have no aliens we spawn more
+        if not self.aliens:
+            self.bullets.empty()
+            self._create_fleet()
+
+    def _check_bullet_alien_collision(self):
+        """Check for colisions and if one is found delete bullet and alien"""
+        collisions = pygame.sprite.groupcollide(
+            self.bullets, self.aliens, True, True
+        )
 
 
 if __name__ == '__main__':
