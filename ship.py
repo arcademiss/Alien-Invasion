@@ -23,6 +23,11 @@ class Ship:
         # Store the x and y atributes
         self.x = float(self.rect.x)
 
+    def ship_center(self):
+        """Centers the ship"""
+        self.rect.midbottom = self.screen_rect.midbottom
+        self.x = float(self.rect.x)
+
     def update(self):
         """Update the ship's position based on the movement of flag."""
         if self.moving_right and self.rect.right < self.screen_rect.right:
