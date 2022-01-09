@@ -67,6 +67,7 @@ class AlienInvasion:
             sys.exit()
         elif event.key == pygame.K_p and not self.stats.active_game:
             self._start_game()
+            self.sb.prep_score()
 
     def _check_keyup_events(self, event):
         """Checks for releasing buttons"""
@@ -190,6 +191,10 @@ class AlienInvasion:
         collisions = pygame.sprite.groupcollide(
             self.bullets, self.aliens, True, True
         )
+        if collisions:
+            for alien in collisions.values():
+                self.stats.score += (self.settings.alien_points * len(alien))
+            self.sb.prep_score()
 
     def _start_game(self):
         """Starts the game"""
