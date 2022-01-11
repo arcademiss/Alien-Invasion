@@ -185,6 +185,8 @@ class AlienInvasion:
             self.bullets.empty()
             self._create_fleet()
             self.settings.increase_speed()
+            self.stats.level += 1
+            self.sb.prep_level()
 
     def _check_bullet_alien_collision(self):
         """Check for collisions and if one is found delete bullet and alien"""
