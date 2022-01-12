@@ -68,6 +68,7 @@ class AlienInvasion:
         elif event.key == pygame.K_p and not self.stats.active_game:
             self._start_game()
             self.sb.prep_score()
+            self.sb.prep_ships()
 
     def _check_keyup_events(self, event):
         """Checks for releasing buttons"""
@@ -142,9 +143,10 @@ class AlienInvasion:
     def _ship_hit(self):
         """Respond to an alien hitting the ship"""
         # Decrement the number of ships left
-        if self.settings.ship_speed > 0:
-            self.settings.ship_limit -= 1
-        if self.settings.ship_limit <= 0:
+        if self.stats.ships_left > 0:
+            self.stats.ships_left -= 1
+            self.sb.prep_ships()
+        elif self.stats.ships_left <= 0:
             self.stats.active_game = False
             pygame.mouse.set_visible(True)
         # Delete aliens and bullets
