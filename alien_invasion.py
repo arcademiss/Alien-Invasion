@@ -8,6 +8,7 @@ from time import sleep
 from game_stats import GameStats
 from button import Button
 from scoreboard import Scoreboard
+import json
 
 
 class AlienInvasion:
@@ -64,6 +65,8 @@ class AlienInvasion:
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
         elif event.key == pygame.K_q:
+            with open('high_score.json', 'w') as f:
+                json.dump(self.stats.high_score, f)
             sys.exit()
         elif event.key == pygame.K_p and not self.stats.active_game:
             self._start_game()
